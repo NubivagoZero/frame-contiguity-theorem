@@ -1,7 +1,10 @@
 package niv.itp;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -10,8 +13,6 @@ import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup.BlockApiProvider;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.InsertionOnlyStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -43,35 +44,21 @@ public class ObsidianStorageProvider<T> implements BlockApiProvider<Storage<T>, 
 
         var targetLevel = getTargetLevel(level);
         if (targetLevel == null)
-            return new InsertionOnlyDummyStorage<T>();
+            return Storage.empty();
 
-        var targetPortalPos = getTargetPortalPos(level, targetLevel, pos.relative(side, 2));
-        if (targetPortalPos == null)
-            return new InsertionOnlyDummyStorage<T>();
+        var targetPos = getTargetPortalPos(level, targetLevel, pos.relative(side, 2));
+        if (targetPos == null)
+            return Storage.empty();
 
-        var targetPortalAxis = getTargetPortalAxis(targetLevel, targetPortalPos);
-        if (targetPortalAxis == null)
-            return new InsertionOnlyDummyStorage<T>();
+        var axis = getTargetPortalAxis(targetLevel, targetPos);
+        if (axis == null)
+            return Storage.empty();
 
-        var targetBlockPosArray = getTargetStoragePosArray(
-                targetLevel, targetPortalPos, targetPortalAxis, side);
-
-        var targetSide = side.getAxis() == Axis.Y ? side
-                : Direction.fromAxisAndDirection(targetPortalAxis, side.getAxisDirection());
-
-        var targetStorageParts = new ArrayList<Storage<T>>(targetBlockPosArray.length);
-        for (var targetBlockPos : targetBlockPosArray) {
-            if (targetBlockPos != null) {
-                var storage = lookup.find(targetLevel, targetBlockPos, targetSide);
-                if (storage != null)
-                    targetStorageParts.add(storage);
-            }
-        }
-
-        return new CombinedStorage<>(targetStorageParts);
+        var parts = getTargetStorageList(targetLevel, targetPos, axis, side);
+        return parts.isEmpty() ? Storage.empty() : new CombinedStorage<>(parts);
     }
 
-    private static boolean isNetherPortalFrame(
+    private boolean isNetherPortalFrame(
             Level level, BlockPos blockPos, BlockState blockState, Direction side) {
         return (level.dimension() == Level.OVERWORLD || level.dimension() == Level.NETHER)
                 && blockState.is(Blocks.OBSIDIAN)
@@ -83,13 +70,13 @@ public class ObsidianStorageProvider<T> implements BlockApiProvider<Storage<T>, 
                         .isPresent();
     }
 
-    private static @Nullable ServerLevel getTargetLevel(Level sourceLevel) {
+    private @Nullable ServerLevel getTargetLevel(Level sourceLevel) {
         var server = sourceLevel.getServer();
         var dimension = sourceLevel.dimension() == Level.NETHER ? Level.OVERWORLD : Level.NETHER;
         return server == null ? null : server.getLevel(dimension);
     }
 
-    private static @Nullable BlockPos getTargetPortalPos(
+    private @Nullable BlockPos getTargetPortalPos(
             Level sourceLevel, ServerLevel targetLevel, BlockPos sourcePortalPos) {
         var targetWorldBorder = targetLevel.getWorldBorder();
         var teleportationScale = DimensionType.getTeleportationScale(
@@ -104,7 +91,7 @@ public class ObsidianStorageProvider<T> implements BlockApiProvider<Storage<T>, 
                 .orElse(null);
     }
 
-    private static @Nullable Axis getTargetPortalAxis(
+    private @Nullable Axis getTargetPortalAxis(
             ServerLevel targetLevel, BlockPos targetPortalPos) {
         var targetPortalState = targetLevel.getBlockState(targetPortalPos);
         if (targetPortalState.is(Blocks.NETHER_PORTAL)) {
@@ -114,49 +101,40 @@ public class ObsidianStorageProvider<T> implements BlockApiProvider<Storage<T>, 
         }
     }
 
-    private static BlockPos[] getTargetStoragePosArray(
-            ServerLevel targetLevel, BlockPos targetPortalPos, Axis targetPortalAxis, Direction side) {
+    private List<Storage<T>> getTargetStorageList(
+            ServerLevel level, BlockPos pos, Axis axis, Direction side) {
 
-        @SuppressWarnings("null")
-        var rectangle = BlockUtil.getLargestRectangleAround(targetPortalPos,
-                targetPortalAxis, PortalShape.MAX_WIDTH,
+        var rectangle = BlockUtil.getLargestRectangleAround(pos,
+                axis, PortalShape.MAX_WIDTH,
                 Axis.Y, PortalShape.MAX_HEIGHT,
-                testPos -> targetLevel.getBlockState(testPos).is(Blocks.NETHER_PORTAL));
+                testPos -> testPos != null && level.getBlockState(testPos).is(Blocks.NETHER_PORTAL));
 
-        var list = new ArrayList<BlockPos>(Math.max(rectangle.axis1Size, rectangle.axis2Size));
-
-        var offset = side.getAxisDirection() == AxisDirection.NEGATIVE ? rectangle.axis1Size + 1 : -2;
+        var list = new ArrayList<Storage<T>>(Math.max(rectangle.axis1Size, rectangle.axis2Size));
 
         if (side.getAxis() == Axis.Y) {
-            var pos = rectangle.minCorner.relative(Axis.Y, offset);
+            var zeroPos = rectangle.minCorner.relative(Axis.Y,
+                    side.getAxisDirection() == AxisDirection.NEGATIVE ? rectangle.axis1Size + 1 : -2);
             for (int i = 0; i < rectangle.axis1Size; i++)
-                list.add(pos.relative(targetPortalAxis, i));
+                this.tryFindAndAddStorage(level, zeroPos.relative(axis, i), side, list);
+
         } else {
-            var pos = rectangle.minCorner.relative(targetPortalAxis, offset);
-            for (int i = 0; i < rectangle.axis2Size; i++)
-                list.add(pos.above(i));
-        }
-
-        var array = list.toArray(BlockPos[]::new);
-        var random = targetLevel.getRandom();
-
-        if (array.length >= 1) {
-            // Fisher-Yates Shuffle
-            for (var i = array.length - 1; i > 0; i--) {
-                var j = random.nextInt(i + 1);
-                var dir = array[i];
-                array[i] = array[j];
-                array[j] = dir;
+            var leftPos = rectangle.minCorner.relative(axis.getNegative(), 2);
+            var rightPos = rectangle.minCorner.relative(axis.getPositive(), rectangle.axis1Size + 1);
+            for (int i = 0; i < rectangle.axis2Size; i++) {
+                this.tryFindAndAddStorage(level, leftPos.above(i), axis.getPositive(), list);
+                this.tryFindAndAddStorage(level, rightPos.above(i), axis.getNegative(), list);
             }
         }
 
-        return array;
+        var seed = level.getGameTime() * pos.hashCode();
+        if (seed != 0 && list.size() > 1)
+            Collections.shuffle(list, new Random(seed));
+        return list;
     }
 
-    private static final class InsertionOnlyDummyStorage<T> implements InsertionOnlyStorage<T> {
-        @Override
-        public long insert(T resource, long maxAmount, TransactionContext transaction) {
-            return 0;
-        }
+    private void tryFindAndAddStorage(ServerLevel level, BlockPos pos, Direction side, List<Storage<T>> list) {
+        var rightStorage = this.lookup.find(level, pos, side);
+        if (rightStorage != null)
+            list.add(rightStorage);
     }
 }

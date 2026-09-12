@@ -1,28 +1,28 @@
 {
-	"schemaVersion": 1,
-	"id": "interdimensional-transfer-protocol",
-	"version": "${version}",
-	"name": "Interdimensional Transfer Protocol",
-	"description": "This is an example description! Tell everyone what your mod is about!",
-	"authors": [
-		"Nubìvago"
-	],
-	"contact": {
+    "schemaVersion": 1,
+    "id": "interdimensional-transfer-protocol",
+    "version": "${version}",
+    "name": "Interdimensional Transfer Protocol",
+    "description": "This is an example description! Tell everyone what your mod is about!",
+    "authors": [
+        "Nubìvago"
+    ],
+    "contact": {
         "homepage": "https://modrinth.com/mod/interdimensional-transfer-protocol",
         "sources": "https://github.com/un-nubivago/interdimensional-transfer-protocol"
     },
-	"license": "MIT",
-	"icon": "assets/interdimensional-transfer-protocol/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"niv.itp.InterdimensionalTransferProtocol"
-		]
-	},
-	"depends": {
-		"fabricloader": ">=${loader_version}",
-		"minecraft": ">=${minecraft_version}",
-		"java": ">=25",
-		"fabric-api": "*"
-	}
+    "license": "MIT",
+    "icon": "assets/interdimensional-transfer-protocol/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "niv.itp.InterdimensionalTransferProtocol"
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=${loader_version}",
+        "minecraft": ">=${minecraft_version}",
+        "java": ">=25",
+        "fabric-api": "*"
+    }
 }

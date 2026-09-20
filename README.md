@@ -1,6 +1,6 @@
 # Frame Contiguity Theorem
 
-> _"To pack oneself like a beast of burden, or to hurl cast-iron carts into swirling portals, is a primitive, crude, and, if I may, rude way to trade across realms. The obsidian frames bind the way, and in doing so, open another."_
+> _"To pack oneself like a beast of burden, or to hurl cast-iron carts into swirling portals, is a primitive, crude, and, if I may, rude way to trade across realms. The obsidian frames bind the way and, in doing so, open another."_
 >
 > — **Uncredited**, from the transcript of a public debate
 
@@ -18,6 +18,6 @@ The **Frame Contiguity Theorem** asserts that the solid borders enclosing a port
 
 + Not all sides of a frame are contiguous in the same way. Blocks that aren't essential for stabilising the portal, such as the corners of a Netherworld portal, don't have contiguity altogether, and of those that are essential, only the sides belonging to the portal's plane connect to the paired portal's frame, specifically:
 
-  + Sides facing upwards or downwards only connect to the respective opposite sides of the paired frame. So, up to down, and down to up.
+  + Sides facing up or down connect only to the respective opposite sides of the paired frame. So, up to down, and down to up.
 
   + Sides facing any cardinal direction connect to all cardinal-facing sides on the paired frame, regardless of how the target portal is rotated.

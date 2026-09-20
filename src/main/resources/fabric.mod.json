@@ -1,22 +1,22 @@
 {
     "schemaVersion": 1,
-    "id": "interdimensional-transfer-protocol",
+    "id": "frame-contiguity-theorem",
     "version": "${version}",
-    "name": "Interdimensional Transfer Protocol",
-    "description": "The obsidian frames bind the way, and in doing so, open another.",
+    "name": "Frame Contiguity Theorem",
+    "description": "The obsidian frames bind the way, and in doing so, open another. We shall harness this power for safer cross-dimensional engineering.",
     "authors": [
         "Nubìvago"
     ],
     "contact": {
-        "homepage": "https://modrinth.com/mod/interdimensional-transfer-protocol",
-        "sources": "https://github.com/un-nubivago/interdimensional-transfer-protocol"
+        "homepage": "https://modrinth.com/mod/frame-contiguity-theorem",
+        "sources": "https://github.com/un-nubivago/frame-contiguity-theorem"
     },
     "license": "MIT",
-    "icon": "assets/interdimensional-transfer-protocol/icon.png",
+    "icon": "assets/frame-contiguity-theorem/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "niv.itp.InterdimensionalTransferProtocol"
+            "niv.fct.FrameContiguityTheorem"
         ]
     },
     "depends": {

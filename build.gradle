@@ -5,17 +5,11 @@ plugins {
 }
 
 repositories {
-    // exclusiveContent {
-    //     forRepository {
-    //         maven {
-    //             name = "Modrinth"
-    //             url = "https://api.modrinth.com/maven"
-    //         }
-    //     }
-    //     filter {
-    //         includeGroup "maven.modrinth"
-    //     }
-    // }
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    // for more information about repositories.
 }
 
 dependencies {
@@ -84,7 +78,7 @@ publishing {
 modrinth {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = "${project.project_id}"
-    versionName = "Interdimensional Transfer Protocol ${project.version}"
+    versionName = "Frame Contiguity Theorem ${project.version}"
     changelog = "sh CHANGELOG.sh".execute().text
     versionType = "release"
     gameVersions = Arrays.asList("${project.game_versions}".toString().split(","))

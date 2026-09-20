@@ -1,4 +1,4 @@
-package niv.itp;
+package niv.fct;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,11 +28,11 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.portal.PortalShape;
 
 @NullMarked
-public class ObsidianStorageProvider<T> implements BlockApiProvider<Storage<T>, @Nullable Direction> {
+public class ObsidianFrameCorollary<T> implements BlockApiProvider<Storage<T>, @Nullable Direction> {
 
     private final BlockApiLookup<Storage<T>, @Nullable Direction> lookup;
 
-    public ObsidianStorageProvider(final BlockApiLookup<Storage<T>, @Nullable Direction> lookup) {
+    public ObsidianFrameCorollary(final BlockApiLookup<Storage<T>, @Nullable Direction> lookup) {
         this.lookup = lookup;
     }
 

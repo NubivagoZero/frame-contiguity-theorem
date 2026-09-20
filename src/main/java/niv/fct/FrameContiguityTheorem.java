@@ -1,4 +1,4 @@
-package niv.itp;
+package niv.fct;
 
 import static net.minecraft.world.level.block.Blocks.OBSIDIAN;
 
@@ -16,22 +16,24 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 
 @NullMarked
-public class InterdimensionalTransferProtocol implements ModInitializer {
+public class FrameContiguityTheorem implements ModInitializer {
 
-    public static final String MOD_ID = "interdimensional-transfer-protocol";
+    public static final String MOD_ID = "frame-contiguity-theorem";
 
-    public static final String MOD_NAME = "Interdimensional Transfer Protocol";
+    public static final String MOD_NAME = "Frame Contiguity Theorem";
 
     @SuppressWarnings("null")
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
+    private static final String OBSIDIAN_FRAME_LOG = "("+ MOD_NAME + ") Obsidian frame corollary proved for {}";
+
     @Override
     public void onInitialize() {
-        ItemStorage.SIDED.registerForBlocks(new ObsidianStorageProvider<>(ItemStorage.SIDED), OBSIDIAN);
-        LOGGER.info("({}) Loaded ITP module for {}", MOD_NAME, ItemStorage.SIDED.getId());
+        ItemStorage.SIDED.registerForBlocks(new ObsidianFrameCorollary<>(ItemStorage.SIDED), OBSIDIAN);
+        LOGGER.info(OBSIDIAN_FRAME_LOG, ItemStorage.SIDED.getId());
 
-        FluidStorage.SIDED.registerForBlocks(new ObsidianStorageProvider<>(FluidStorage.SIDED), OBSIDIAN);
-        LOGGER.info("({}) Loaded ITP module for {}", MOD_NAME, FluidStorage.SIDED.getId());
+        FluidStorage.SIDED.registerForBlocks(new ObsidianFrameCorollary<>(FluidStorage.SIDED), OBSIDIAN);
+        LOGGER.info(OBSIDIAN_FRAME_LOG, FluidStorage.SIDED.getId());
 
         tryRegisterBurningStorage();
 
@@ -46,8 +48,8 @@ public class InterdimensionalTransferProtocol implements ModInitializer {
                 @SuppressWarnings("unchecked")
                 var sided = (BlockApiLookup<Storage<Object>, @Nullable Direction>) fieldSided.get(null);
                 if (sided != null) {
-                    sided.registerForBlocks(new ObsidianStorageProvider<>(sided), OBSIDIAN);
-                    LOGGER.info("({}) Loaded ITP module for {}", MOD_NAME, sided.getId());
+                    sided.registerForBlocks(new ObsidianFrameCorollary<>(sided), OBSIDIAN);
+                    LOGGER.info(OBSIDIAN_FRAME_LOG, MOD_NAME, sided.getId());
                 }
             }
         } catch (ClassNotFoundException _) {

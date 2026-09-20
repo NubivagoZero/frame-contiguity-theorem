@@ -1,41 +1,23 @@
-# Interdimensional Transfer Protocol
+# Frame Contiguity Theorem
 
 > _"To pack oneself like a beast of burden, or to hurl cast-iron carts into swirling portals, is a primitive, crude, and, if I may, rude way to trade across realms. The obsidian frames bind the way, and in doing so, open another."_
 >
-> — **Uncredited**, from the transcript of a public debate in the **Hall of Enlightenment**
+> — **Uncredited**, from the transcript of a public debate
 
-The **Interdimensional Transfer Protocol (ITP)** turns the volcanic glass framing portals to the Netherworld into stateless relays able to move items, fluids, and even raw energy across realms.
-
-Where wayfarers once endured overburdened trips, cluttered item streams, or volatile rails, **ITP** allows us to bind our hoppers and pipes directly to the outer sides of the obsidian frame. The binding glass acts as a cross-dimensional bridge, effortlessly displacing what it's bound to receive into whatever containers or pipes await on the other side.
+The **Frame Contiguity Theorem** asserts that the solid borders enclosing a portal, such as the Obsidian blocks of the portal for the Netherworld, do not merely hold the rift open and stable—they share physical space with their paired destination. By binding conduits and machinery directly to the outer frame, they can share matter and energy with those bound to the paired portal's frame as if they were right beside one another.
 
 ![Showcase](img/Showcase_1.png)
 
-## Tenets
+## Axioms
 
-+ _Obsidian binds, but does not store._
++ Matter and energy flow through the frame, but never linger inside it. If no vessel awaits on the other side to receive them, the frame refuses entry.
 
-  Matter and energy flow through the frame, but never linger inside it. If no vessel awaits on the other side, the obsidian refuses them.
++ A frame draws its contiguity from the lit portal it encloses. Extinguishing the portal on either side breaks the connection on both sides, at least until it is rekindled.
 
-+ _The portal swirls, the world breathes._
++ Even a lit portal cannot bridge to what does not currently exist. If either end of a portal lies in a dormant chunk, no frame contiguity emerges.
 
-  Items live preserved inside their vessels. None are loosened to decay, and the world keeps on flowing seamlessly.
++ Not all sides of a frame are contiguous in the same way. Blocks that aren't essential for stabilising the portal, such as the corners of a Netherworld portal, don't have contiguity altogether, and of those that are essential, only the sides belonging to the portal's plane connect to the paired portal's frame, specifically:
 
-+ _Eight steps here, one step there._
+  + Sides facing upwards or downwards only connect to the respective opposite sides of the paired frame. So, up to down, and down to up.
 
-  To cross the realms is to fold space eight times. Even the binding glass cannot escape this geometry.
-
-## Frailties
-
-+ _Portals do not have eyes, but they must see._
-
-  It has been observed again and again that portions of the world seemingly cease to exist when unobserved. If either end of a portal lies in one of these absences, no transaction can happen.
-
-  Other magicians may have already solved this conundrum, so consult their works.
-
-+ _Nothing to bind, nothing to transfer._
-
-  The obsidian frame draws its bridging property from the lit portal it binds. Dispelling the portal halts any displacement until it gets rekindled.
-
-+ _Where wares flow._
-
-  Not all sides of the obsidian frame are the same. Bind conduits to the top, and the frame will search for vessels below the other portal. Bind conduits to the bottom, and it will search above the other. Bind either left or right, and it will search both left and right on the other side. But don't try to bind anything before or behind the frame, for nothing will work.
+  + Sides facing any cardinal direction connect to all cardinal-facing sides on the paired frame, regardless of how the target portal is rotated.
